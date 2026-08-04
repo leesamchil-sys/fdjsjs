@@ -1,6 +1,0 @@
-{
-  "name": "PIG TOWN",
-  "description": "도감 수집과 작물 재배를 도와주는 스마트 알림 서비스, 피그타운 입니다.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
