@@ -1,0 +1,1 @@
+sed -i 's/                            if (setShowPrices) setShowPrices(false);/                            if (setShowPrices) setShowPrices(false);\n                            if (setIsSeasonFilterEnabled) setIsSeasonFilterEnabled(false);\n                            if (setSelectedSeasonFilters) setSelectedSeasonFilters(\[\]);/g' src/components/EncyclopediaFilterDropdown.tsx

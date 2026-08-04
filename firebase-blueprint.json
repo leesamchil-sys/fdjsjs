@@ -1,0 +1,206 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Garden State",
+      "description": "Represents a user's cross-device integrated garden state, harvest statistics, and Telegram alert settings.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Unique Google Authentication User ID"
+        },
+        "email": {
+          "type": "string",
+          "description": "Registered Google user email"
+        },
+        "weeklyWeather": {
+          "type": "object",
+          "description": "Map representing day of week to GameWeather"
+        },
+        "detailedWeather": {
+          "type": "object",
+          "description": "Map representing YYYY-MM-DD-HH key to GameWeather"
+        },
+        "soundEnabled": {
+          "type": "boolean",
+          "description": "Toggle states for browser audios"
+        },
+        "telegramToken": {
+          "type": "string",
+          "description": "Active active Telegram bot API credential"
+        },
+        "telegramChatId": {
+          "type": "string",
+          "description": "Target Telegram channel/chat destination"
+        },
+        "isTelegramConfigured": {
+          "type": "boolean",
+          "description": "True if user has completed Telegram bot configuration"
+        },
+        "isGasConfigured": {
+          "type": "boolean",
+          "description": "True if user has configured Google Apps Script Webapp URL"
+        },
+        "slots": {
+          "type": "array",
+          "description": "Bounded array containing the state of the 8 planting slots"
+        },
+        "completedBirdIds": {
+          "type": "array",
+          "description": "Array of completed bird collection IDs"
+        },
+        "completedInsectIds": {
+          "type": "array",
+          "description": "Array of completed insect collection IDs"
+        },
+        "completedFishIds": {
+          "type": "array",
+          "description": "Array of completed fishing collection IDs"
+        },
+        "completedGardeningNames": {
+          "type": "array",
+          "description": "Array of completed gardening names"
+        },
+        "masterGardeningNames": {
+          "type": "array",
+          "description": "Array of master gardening names"
+        },
+        "ratings": {
+          "type": "object",
+          "description": "Map representing item ID to star rating (1-5)"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the last status change"
+        },
+        "joinDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the user's first login"
+        }
+      },
+      "required": ["uid", "email", "slots", "updatedAt"]
+    },
+    "VisitorStats": {
+      "title": "Visitor Statistics",
+      "description": "Stores daily unique visitor count.",
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "description": "Number of unique visitors today"
+        },
+        "date": {
+          "type": "string",
+          "description": "Date string in YYYY-MM-DD format"
+        }
+      },
+      "required": ["count", "date"]
+    },
+    "VisitorLog": {
+      "title": "Visitor Log",
+      "description": "Logs user version at session start.",
+      "type": "object",
+      "properties": {
+        "version": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "userAgent": { "type": "string" }
+      },
+      "required": ["version", "timestamp"]
+    },
+    "Notice": {
+      "title": "Notice",
+      "description": "Represents an announcement posted by the developer/admin on the main home screen.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "isPinned": { "type": "boolean" },
+        "author": { "type": "string" }
+      },
+      "required": ["id", "title", "content"]
+    },
+    "Coupon": {
+      "title": "Redeem Code Coupon",
+      "description": "Represents a game redeem code/coupon with a title, code, reward, and expiration date.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "code": { "type": "string" },
+        "title": { "type": "string" },
+        "reward": { "type": "string" },
+        "expiredAt": { "type": "string", "format": "date" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "code", "expiredAt"]
+    }
+  },
+  "firestore": {
+    "coupons/{couponId}": {
+      "schema": "Coupon",
+      "description": "Game redeem codes and coupons managed by administrators."
+    },
+    "notices/{noticeId}": {
+      "schema": "Notice",
+      "description": "Public notices and announcements created by the administrator."
+    },
+    "users/{userId}": {
+      "schema": "User",
+      "description": "Stores user-scoped settings, statistics, and live crop countdown state."
+    },
+    "visitation_stats/{date}": {
+      "schema": "VisitorStats",
+      "description": "Stores daily unique visitor counts."
+    },
+    "visitor_logs/{logId}": {
+      "schema": "VisitorLog",
+      "description": "Logs user version at session start."
+    },
+    "birds/{birdId}": {
+      "schema": {
+        "title": "Bird Catalog Reference",
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "level": { "type": "integer" },
+          "name": { "type": "string" },
+          "weather": { "type": "string" },
+          "locations": { "type": "array" }
+        }
+      },
+      "description": "Public catalog of collectible bird species."
+    },
+    "insects/{insectId}": {
+      "schema": {
+        "title": "Insect Catalog Reference",
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "level": { "type": "integer" },
+          "name": { "type": "string" },
+          "weather": { "type": "string" },
+          "locations": { "type": "array" }
+        }
+      },
+      "description": "Public catalog of collectible insect species."
+    },
+    "fishing/{fishId}": {
+      "schema": {
+        "title": "Fish Catalog Reference",
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "level": { "type": "integer" },
+          "name": { "type": "string" },
+          "weather": { "type": "string" },
+          "locations": { "type": "array" }
+        }
+      },
+      "description": "Public catalog of collectible fish species."
+    }
+  }
+}
