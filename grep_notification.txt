@@ -1,0 +1,39 @@
+src/components/CropTimer.tsx:476:    const notificationState: any = existingState ? JSON.parse(JSON.stringify(existingState)) : {};
+src/components/CropTimer.tsx:479:      if (!notificationState[stage.id]) {
+src/components/CropTimer.tsx:480:        notificationState[stage.id] = { preSent: false, actualSent: false, completed: false };
+src/components/CropTimer.tsx:487:      const state = notificationState[stage.id];
+src/components/CropTimer.tsx:509:    return notificationState;
+src/components/CropTimer.tsx:677:  // An event should only trigger notifications if it crossed the threshold during this exact tick,
+src/components/CropTimer.tsx:679:  // We don't want to blast 10-hour old notifications when opening the app.
+src/components/CropTimer.tsx:717:    // Pre-notification
+src/components/CropTimer.tsx:729:    // Actual notification
+src/components/CropTimer.tsx:909:    // Recalculate notification states for all active slots immediately
+src/components/CropTimer.tsx:940:  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>(
+src/components/CropTimer.tsx:952:  const lastSyncedPresetsRef = useRef<string>(localStorage.getItem('user_notification_presets') || '[]');
+src/components/CropTimer.tsx:1020:    const saved = localStorage.getItem('user_notification_presets');
+src/components/CropTimer.tsx:1026:    localStorage.setItem('user_notification_presets', presetsStr);
+src/components/CropTimer.tsx:1479:      const savedPresets = localStorage.getItem('user_notification_presets');
+src/components/CropTimer.tsx:1525:        localStorage.removeItem('user_notification_presets');
+src/components/CropTimer.tsx:1585:        setUserPresets(safeJsonParse(localStorage.getItem('user_notification_presets'), []));
+src/components/CropTimer.tsx:1783:            localStorage.setItem('user_notification_presets', cloudPresetsStr);
+src/components/CropTimer.tsx:1864:              const localPresets = localStorage.getItem('user_notification_presets');
+src/components/CropTimer.tsx:1868:                localStorage.setItem('user_notification_presets', cloudPresetsStr);
+src/components/CropTimer.tsx:2519:          // On first load, catch up silently to avoid duplicate notifications or alarm spam for offline-completed events
+src/components/CropTimer.tsx:2537:          if (notificationPermission === 'granted' && typeof Notification !== 'undefined') {
+src/components/CropTimer.tsx:2609:  }, [telegramToken, telegramChatId, soundEnabled, user, timeOffset, notificationPermission]);
+src/components/CropTimer.tsx:3353:                      notificationPermission === 'granted'
+src/components/CropTimer.tsx:3360:                      notificationPermission === 'granted'
+src/components/CropTimer.tsx:3370:                        notificationPermission === 'granted'
+src/components/CropTimer.tsx:3374:                        {notificationPermission === 'granted' ? '허용됨' : '설정하기'}
+src/components/CropTimer.tsx:3958:                {/* 5-Star completed 4th weeding check notification */}
+src/components/CropTimer.tsx:4231:                      notificationPermission === 'granted'
+src/components/CropTimer.tsx:4238:                      notificationPermission === 'granted'
+src/components/CropTimer.tsx:4248:                        notificationPermission === 'granted'
+src/components/CropTimer.tsx:4252:                        {notificationPermission === 'granted' ? '허용 완료' : '설정하기 (클릭)'}
+src/App.tsx:3699:          'user_notification_presets',
+src/App.tsx:6135:            notification_settings: {
+src/App.tsx:6143:                const p = localStorage.getItem('user_notification_presets');
+src/App.tsx:6172:            'notification_settings'
+src/App.tsx:6259:          const ns = data.notification_settings || {};
+src/App.tsx:6274:          localStorage.setItem('user_notification_presets', JSON.stringify(restoredPresets));
+src/App.tsx:6323:          // Raise modified sync notifications for collection data

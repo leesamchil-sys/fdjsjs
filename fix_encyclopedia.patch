@@ -1,0 +1,49 @@
+--- src/components/EncyclopediaSection.tsx
++++ src/components/EncyclopediaSection.tsx
+@@ -70,3 +70,2 @@
+   completedFoodIds: Set<string>;
+-  completedGardeningIds?: Set<string>;
+   completedOceanCleaningIds?: Set<string>;
+@@ -75,3 +74,2 @@
+   masterFoodIds: Set<string>;
+-  masterGardeningIds?: Set<string>;
+   masterOceanCleaningIds?: Set<string>;
+@@ -158,3 +156,2 @@
+   completedFoodIds,
+-  completedGardeningIds = new Set(),
+   completedOceanCleaningIds = new Set(),
+@@ -163,3 +160,2 @@
+   masterFoodIds,
+-  masterGardeningIds = new Set(),
+   masterOceanCleaningIds = new Set(),
+@@ -600,14 +596,2 @@
+     if (activeCategory === 'ocean_cleaning') return completedOceanCleaningIds;
+-    if (activeCategory === 'gardening') return completedGardeningIds;
+     return new Set<string>();
+-  }, [activeCategory, completedBirdIds, completedInsectIds, completedFishIds, completedFoodIds, completedOceanCleaningIds, completedGardeningIds]);
+-
+-  const masterIds = useMemo(() => {
+-    if (activeCategory === 'birds') return masterBirdIds;
+-    if (activeCategory === 'insects') return masterInsectIds;
+-    if (activeCategory === 'fishing') return masterFishIds;
+-    if (activeCategory === 'cooking') return masterFoodIds;
+-    if (activeCategory === 'ocean_cleaning') return masterOceanCleaningIds;
+-    if (activeCategory === 'gardening') return masterGardeningIds;
+-    return new Set<string>();
+-  }, [activeCategory, masterBirdIds, masterInsectIds, masterFishIds, masterFoodIds, masterOceanCleaningIds, masterGardeningIds]);
++  }, [activeCategory, completedBirdIds, completedInsectIds, completedFishIds, completedFoodIds, completedOceanCleaningIds]);
+@@ -796,3 +780,3 @@
+ 
+-      const isMaster = masterIds.has(item.id);
++      const isMaster = (activeCategory === 'birds' ? masterBirdIds : activeCategory === 'insects' ? masterInsectIds : activeCategory === 'fishing' ? masterFishIds : activeCategory === 'ocean_cleaning' ? masterOceanCleaningIds : masterFoodIds).has(item.id);
+       if (masterFilter === 'done' && !isMaster) return false;
+@@ -1202,3 +1186,3 @@
+                         onToggle={() => toggleCompletion(item.id)}
+-                        isMaster={masterIds.has(item.id)}
++                        isMaster={(activeCategory === 'birds' ? masterBirdIds : activeCategory === 'insects' ? masterInsectIds : activeCategory === 'fishing' ? masterFishIds : (activeCategory as string) === 'ocean_cleaning' ? masterOceanCleaningIds : masterFoodIds).has(item.id)}
+                         onToggleMaster={() => toggleMaster(item.id)}
+@@ -2431,3 +2415,3 @@
+                   onToggle={() => toggleCompletion(item.id)}
+-                  isMaster={masterIds.has(item.id)}
++                  isMaster={(activeCategory === 'birds' ? masterBirdIds : activeCategory === 'insects' ? masterInsectIds : activeCategory === 'fishing' ? masterFishIds : activeCategory === 'ocean_cleaning' ? masterOceanCleaningIds : masterFoodIds).has(item.id)}
+                   onToggleMaster={() => toggleMaster(item.id)}

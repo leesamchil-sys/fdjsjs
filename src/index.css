@@ -1,0 +1,234 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@variant dark (.dark &);
+
+@theme {
+  --font-sans: "Pretendard", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --breakpoint-xs: 400px;
+
+  /* Custom stone and slate helper shades used throughout the codebase */
+  --color-stone-105: #f5f4f0;
+  --color-stone-150: #e7e5e0;
+  --color-stone-205: #dedcd5;
+  --color-stone-550: #716e64;
+  --color-stone-605: #a8a29e;
+  --color-stone-705: #44403c;
+  --color-stone-805: #292524;
+  --color-stone-850: #221f1d;
+  --color-stone-905: #1c1917;
+  --color-stone-955: #0c0a09;
+  --color-slate-805: #1e293b;
+
+  --animate-rainbow: rainbow 12s linear infinite;
+  --animate-shimmer: shimmer 4s infinite;
+  --animate-sparkle: sparkle 2s ease-in-out infinite;
+  --animate-marquee: marquee 25s linear infinite;
+  
+  --animate-spin-slow: spin 3s linear infinite;
+  
+  @keyframes marquee {
+    0% { left: 100%; transform: translateX(0%); }
+    100% { left: 0%; transform: translateX(-100%); }
+  }
+
+  @keyframes rainbow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-150%) skewX(-20deg); opacity: 0; }
+    20% { opacity: 0.5; }
+    50% { opacity: 0.5; transform: translateX(150%) skewX(-20deg); }
+    100% { transform: translateX(150%) skewX(-20deg); opacity: 0; }
+  }
+
+  @keyframes sparkle {
+    0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+    50% { transform: scale(1) rotate(180deg); opacity: 1; }
+  }
+}
+
+@keyframes custom-marquee {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(calc(-100vw - 100%), 0, 0); }
+}
+
+:root {
+  --sticky-top-mobile: 120px;
+  --sticky-top-desktop: 65px;
+}
+
+body {
+  @apply bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 antialiased font-sans transition-colors duration-300;
+  -webkit-font-smoothing: antialiased;                
+  -moz-osx-font-smoothing: grayscale;
+  scrollbar-gutter: stable;
+  overflow-x: clip !important;
+  max-width: 100vw !important;
+  touch-action: pan-y;
+}
+
+/* Custom layout preservation rules: keep HTML root font-size at 16px */
+html {
+  font-size: 16px !important;
+  scrollbar-gutter: stable;
+  overflow-x: clip !important;
+  max-width: 100vw !important;
+  touch-action: pan-y;
+}
+
+#root {
+  overflow-x: clip !important;
+  max-width: 100vw !important;
+  touch-action: pan-y;
+}
+
+/* Prevent text/UI scaling in locked layouts (e.g. sidebar and search/header navigation) */
+.font-scale-lock,
+.font-scale-lock * {
+  --app-font-scale: 1 !important;
+}
+
+/* Override utility text classes with reactive --app-font-scale multipliers */
+.text-xs,
+.text-\[12px\] {
+  font-size: calc(0.75rem * var(--app-font-scale, 1)) !important;
+}
+
+.text-sm,
+.text-\[13px\] {
+  font-size: calc(0.875rem * var(--app-font-scale, 1)) !important;
+}
+
+.text-base,
+.text-\[16px\] {
+  font-size: calc(1rem * var(--app-font-scale, 1)) !important;
+}
+
+.text-lg,
+.text-\[18px\] {
+  font-size: calc(1.125rem * var(--app-font-scale, 1)) !important;
+}
+
+.text-xl,
+.text-\[20px\] {
+  font-size: calc(1.25rem * var(--app-font-scale, 1)) !important;
+}
+
+.text-2xl,
+.text-\[24px\] {
+  font-size: calc(1.5rem * var(--app-font-scale, 1)) !important;
+}
+
+.text-3xl {
+  font-size: calc(1.875rem * var(--app-font-scale, 1)) !important;
+}
+
+.text-\[10px\] {
+  font-size: calc(10px * var(--app-font-scale, 1)) !important;
+}
+
+.text-\[11px\] {
+  font-size: calc(11px * var(--app-font-scale, 1)) !important;
+}
+
+.text-\[9\.5px\],
+.text-\[9px\] {
+  font-size: calc(9px * var(--app-font-scale, 1)) !important;
+}
+
+.text-\[8px\] {
+  font-size: calc(8px * var(--app-font-scale, 1)) !important;
+}
+
+.text-\[8\.5px\] {
+  font-size: calc(8.5px * var(--app-font-scale, 1)) !important;
+}
+
+.markdown-body {
+  @apply text-sm leading-relaxed;
+}
+
+/* Custom Unified Scrollbar System: Elegant, thin scroll bars adapted for both Light & Dark modes */
+::-webkit-scrollbar {
+  width: 8px; /* Vertical scrollbar thickness */
+  height: 8px; /* Horizontal scrollbar thickness */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Seamless blend into the container background */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(120, 113, 108, 0.28); /* Warm stone-like tone with soft opacity */
+  border-radius: 9999px; /* Smooth rounded pill shape */
+  border: 2px solid transparent; /* Padding effect against the edges */
+  background-clip: padding-box;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(120, 113, 108, 0.55);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Dark Mode Scrollbar Adaptability */
+.dark ::-webkit-scrollbar-thumb {
+  background-color: rgba(168, 162, 158, 0.25); /* Subtle stone-400 contrast on stone-950 background */
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(168, 162, 158, 0.55);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Firefox compatibility support across the whole application */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 113, 108, 0.28) transparent;
+}
+
+.dark * {
+  scrollbar-color: rgba(168, 162, 158, 0.25) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(120, 113, 108, 0.25);
+  border-radius: 10px;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(168, 162, 158, 0.2);
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;    /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+
+  /* Hide number input spin buttons */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+}
+

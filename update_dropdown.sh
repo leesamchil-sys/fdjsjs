@@ -1,0 +1,1 @@
+sed -i 's/interface Props {/interface Props {\n    isSeasonFilterEnabled?: boolean;\n    setIsSeasonFilterEnabled?: (enabled: boolean) => void;\n    selectedSeasonFilters?: string[];\n    setSelectedSeasonFilters?: (filters: string[]) => void;/g' src/components/EncyclopediaFilterDropdown.tsx
