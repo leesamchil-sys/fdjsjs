@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pigtown.netlify.app/sitemap.xml

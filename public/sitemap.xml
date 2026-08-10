@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://pigtown.netlify.app/</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url><loc>https://pigtown.netlify.app/home</loc><lastmod>2026-06-28</lastmod></url>
+  <url><loc>https://pigtown.netlify.app/birds</loc><lastmod>2026-06-28</lastmod></url>
+  <url><loc>https://pigtown.netlify.app/insects</loc><lastmod>2026-06-28</lastmod></url>
+  <url><loc>https://pigtown.netlify.app/fishing</loc><lastmod>2026-06-28</lastmod></url>
+  <url><loc>https://pigtown.netlify.app/cooking</loc><lastmod>2026-06-28</lastmod></url>
+  <url><loc>https://pigtown.netlify.app/crops</loc><lastmod>2026-06-28</lastmod></url>
+  <url><loc>https://pigtown.netlify.app/petfood</loc><lastmod>2026-06-28</lastmod></url>
+  <url><loc>https://pigtown.netlify.app/gardening</loc><lastmod>2026-06-28</lastmod></url>
+  <url><loc>https://pigtown.netlify.app/coupons</loc><lastmod>2026-06-28</lastmod></url>
+  <url><loc>https://pigtown.netlify.app/privacy</loc><lastmod>2026-06-28</lastmod></url>
+  <url><loc>https://pigtown.netlify.app/terms</loc><lastmod>2026-06-28</lastmod></url>
+</urlset>

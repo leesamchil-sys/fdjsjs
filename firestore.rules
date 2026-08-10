@@ -1,0 +1,248 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 글로벌 원천 차단 (기본적으로 모두 거부)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 유틸리티 함수
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isBlocked(userId) {
+      return userId in [
+        'BLOCKED_USER_UID_HERE' // 여기에 차단할 특정 계정의 UID를 입력해 주세요.
+      ];
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.uid == 'BneuiETF9gNlJOhh8n30L4rg8Hi2' ||
+        (request.auth.token.email == 'hungry.pig001@gmail.com' && request.auth.token.email_verified == true)
+      );
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // 유저 정보 검증 (이메일 지원)
+    function isValidUser(data) {
+      return (data.get('uid', '') is string) && 
+             (data.get('uid', '').size() <= 128) &&
+             (!('email' in data) || data.email is string || data.email == null) &&
+             (!('forceLogout' in data) || data.forceLogout is bool) &&
+             (!('slots' in data) || data.slots is list) &&
+             (!('slots' in data) || data.slots.size() <= 8) &&
+             (!('farmingSlots' in data) || data.farmingSlots is map) &&
+             (!('userPresets' in data) || data.userPresets is list) &&
+             (!('keepActualNotify' in data) || data.keepActualNotify is bool) &&
+             (!('weeklyWeather' in data) || data.weeklyWeather is map) &&
+             (!('detailedWeather' in data) || data.detailedWeather is map) &&
+             (!('completedBirdIds' in data) || data.completedBirdIds is list) &&
+             (!('completedInsectIds' in data) || data.completedInsectIds is list) &&
+             (!('completedFishIds' in data) || data.completedFishIds is list) &&
+             (!('completedBirdNames' in data) || data.completedBirdNames is list) &&
+             (!('completedInsectNames' in data) || data.completedInsectNames is list) &&
+             (!('completedFishNames' in data) || data.completedFishNames is list) &&
+             (!('completedFoodNames' in data) || data.completedFoodNames is list) &&
+             (!('completedGardeningNames' in data) || data.completedGardeningNames is list) &&
+             (!('completedOceanCleaningNames' in data) || data.completedOceanCleaningNames is list) &&
+             (!('flowerColorCollections' in data) || data.flowerColorCollections is map) &&
+             (!('masterBirdNames' in data) || data.masterBirdNames is list) &&
+             (!('masterInsectNames' in data) || data.masterInsectNames is list) &&
+             (!('masterFishNames' in data) || data.masterFishNames is list) &&
+             (!('masterFoodNames' in data) || data.masterFoodNames is list) &&
+             (!('masterGardeningNames' in data) || data.masterGardeningNames is list) &&
+             (!('masterOceanCleaningNames' in data) || data.masterOceanCleaningNames is list) &&
+             (!('pets' in data) || data.pets is list) &&
+             (!('ratings' in data) || data.ratings is map) &&
+             (!('telegramToken' in data) || data.telegramToken is string) &&
+             (!('telegramChatId' in data) || data.telegramChatId is string) &&
+             (!('gasWebappUrl' in data) || data.gasWebappUrl is string) &&
+             (!('soundEnabled' in data) || data.soundEnabled is bool) &&
+             (!('isTelegramConfigured' in data) || data.isTelegramConfigured is bool) &&
+             (!('isGasConfigured' in data) || data.isGasConfigured is bool) &&
+             (!('lastAppVersion' in data) || data.lastAppVersion is string) &&
+             (!('lastActive' in data) || data.lastActive != null) &&
+             (!('updatedAt' in data) || data.updatedAt != null) &&
+             (!('joinDate' in data) || data.joinDate != null);
+    }
+
+    // 유저 정보 일부만 업데이트할 때 개별 입력 필드들에 대한 데이터 타입 정합성 검토 함수 (버전 로깅 등 유연한 병합 지원)
+    function isValidPartialUser(data) {
+      return (!('uid' in data) || data.uid is string) &&
+             (!('email' in data) || data.email is string || data.email == null) &&
+             (!('forceLogout' in data) || data.forceLogout is bool) &&
+             (!('slots' in data) || data.slots is list) &&
+             (!('farmingSlots' in data) || data.farmingSlots is map) &&
+             (!('userPresets' in data) || data.userPresets is list) &&
+             (!('keepActualNotify' in data) || data.keepActualNotify is bool) &&
+             (!('weeklyWeather' in data) || data.weeklyWeather is map) &&
+             (!('detailedWeather' in data) || data.detailedWeather is map) &&
+             (!('completedBirdIds' in data) || data.completedBirdIds is list) &&
+             (!('completedInsectIds' in data) || data.completedInsectIds is list) &&
+             (!('completedFishIds' in data) || data.completedFishIds is list) &&
+             (!('completedBirdNames' in data) || data.completedBirdNames is list) &&
+             (!('completedInsectNames' in data) || data.completedInsectNames is list) &&
+             (!('completedFishNames' in data) || data.completedFishNames is list) &&
+             (!('completedFoodNames' in data) || data.completedFoodNames is list) &&
+             (!('completedGardeningNames' in data) || data.completedGardeningNames is list) &&
+             (!('completedOceanCleaningNames' in data) || data.completedOceanCleaningNames is list) &&
+             (!('flowerColorCollections' in data) || data.flowerColorCollections is map) &&
+             (!('masterBirdNames' in data) || data.masterBirdNames is list) &&
+             (!('masterInsectNames' in data) || data.masterInsectNames is list) &&
+             (!('masterFishNames' in data) || data.masterFishNames is list) &&
+             (!('masterFoodNames' in data) || data.masterFoodNames is list) &&
+             (!('masterGardeningNames' in data) || data.masterGardeningNames is list) &&
+             (!('masterOceanCleaningNames' in data) || data.masterOceanCleaningNames is list) &&
+             (!('pets' in data) || data.pets is list) &&
+             (!('ratings' in data) || data.ratings is map) &&
+             (!('telegramToken' in data) || data.telegramToken is string) &&
+             (!('telegramChatId' in data) || data.telegramChatId is string) &&
+             (!('gasWebappUrl' in data) || data.gasWebappUrl is string) &&
+             (!('soundEnabled' in data) || data.soundEnabled is bool) &&
+             (!('isTelegramConfigured' in data) || data.isTelegramConfigured is bool) &&
+             (!('isGasConfigured' in data) || data.isGasConfigured is bool) &&
+             (!('lastAppVersion' in data) || data.lastAppVersion is string) &&
+             (!('lastActive' in data) || data.lastActive != null) &&
+             (!('updatedAt' in data) || data.updatedAt != null) &&
+             (!('joinDate' in data) || data.joinDate != null);
+    }
+
+    // 유저 영역 보안
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow write: if isAdmin();
+      allow create: if isOwner(userId) && !isBlocked(userId) && isValidPartialUser(incoming()) && incoming().get('uid', userId) == userId && incoming().get('forceLogout', false) == false;
+      allow update: if isOwner(userId) && !isBlocked(userId) && 
+                      // 버전 체크: lastAppVersion 필드가 반드시 있어야 하며, '0.0.1' 이상이어야 함
+                      ('lastAppVersion' in incoming()) && 
+                      incoming().lastAppVersion >= '0.0.1' &&
+                      isValidPartialUser(incoming()) && 
+                      incoming().get('uid', userId) == userId && 
+                      (!('joinDate' in incoming()) || !('joinDate' in existing()) || incoming().joinDate == existing().joinDate) &&
+                      (!('updatedAt' in incoming()) || !('updatedAt' in existing()) || incoming().updatedAt >= existing().updatedAt) &&
+                      (!('forceLogout' in existing()) || existing().forceLogout == false || incoming().get('forceLogout', true) == true);
+      allow delete: if isOwner(userId) && !isBlocked(userId);
+    }
+
+    // 통계 포맷 엄격 검사
+    function isValidStat(data) {
+      return data.keys().size() <= 20 && // 무차별 다량 필드 추가 차단
+             (data.get('total', 0) is int || data.get('clicks', 0) is int);
+    }
+
+    // 공유 통계 포맷 검사
+    function isValidShareStat(data) {
+        return data.keys().size() <= 100;
+    }
+
+    // 방문자 통계 영역 (악성 공격 데이터 주입 방지)
+    match /visitation_stats/{date} {
+      allow read: if true;
+      allow create, update: if isValidStat(incoming());
+    }
+    
+    // 공유 통계 영역
+    match /map_share_stats/{date} {
+      allow read: if isAdmin();
+      allow create, update: if isValidShareStat(incoming());
+    }
+
+    // 방문자 로그 형식 유효성 검사 (DDoS / 비정상 샌드박스 공격 차단)
+    function isValidVisitorLog(data) {
+      return data.get('deviceId', '') is string &&
+             data.get('deviceId', '').size() <= 128 &&
+             data.get('version', '') is string &&
+             data.get('version', '').size() <= 32 &&
+             data.get('userAgent', '') is string &&
+             data.get('userAgent', '').size() <= 2048 &&
+             data.get('isVisitor', true) is bool &&
+             (!('sessionCount' in data) || data.sessionCount is int) &&
+             (!('language' in data) || data.language is string) &&
+             (!('screenWidth' in data) || data.screenWidth is int) &&
+             (!('screenHeight' in data) || data.screenHeight is int) &&
+             (!('referrer' in data) || data.referrer is string) &&
+             (!('firstVisit' in data) || data.firstVisit != null);
+    }
+
+    // 방문자 로그 영역
+    match /visitor_logs/{logId} {
+      allow create: if isValidVisitorLog(incoming());
+      allow update: if isValidVisitorLog(incoming());
+      allow read: if isAdmin();
+    }
+
+    // 앱 설정 (최소 지원 버전 및 기상 예보 등) - 공개 읽기 허용
+    match /settings/{configId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 도감 영역 (공개 읽기, 관리자 쓰기)
+    function isValidNotice(data) {
+      return data.get('title', '') is string &&
+             data.get('title', '').size() <= 200 &&
+             data.get('content', '') is string &&
+             data.get('content', '').size() <= 10000 &&
+             (!('isPinned' in data) || data.isPinned is bool) &&
+             (!('author' in data) || data.author is string);
+    }
+
+    match /notices/{noticeId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidNotice(incoming());
+      allow update: if isAdmin() && isValidNotice(incoming());
+      allow delete: if isAdmin();
+    }
+
+    function isValidCoupon(data) {
+      return data.get('code', '') is string &&
+             data.get('code', '').size() <= 100 &&
+             (!('title' in data) || data.title is string) &&
+             (!('reward' in data) || data.reward is string) &&
+             data.get('expiredAt', '') is string &&
+             data.get('expiredAt', '').size() <= 20;
+    }
+
+    match /settings_coupons/{couponId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidCoupon(incoming());
+      allow update: if isAdmin() && isValidCoupon(incoming());
+      allow delete: if isAdmin();
+    }
+
+    match /coupons/{couponId} {
+      allow read: if true;
+    }
+
+    match /birds/{birdId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /insects/{insectId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /fishing/{fishId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
