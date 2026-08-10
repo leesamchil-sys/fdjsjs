@@ -1,8 +1,0 @@
-{
-  "name": "Remix 개편_버드 도감 (Bird Encyclopedia)",
-  "description": "",
-  "requestFramePermissions": [],
-  "majorCapabilities": [
-    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
-  ]
-}
