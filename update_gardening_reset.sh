@@ -1,0 +1,1 @@
+sed -i 's/                  setCollectionFilter('"'"'all'"'"');/                  setCollectionFilter('"'"'all'"'"');\n                  setIsSeasonFilterEnabled(false);\n                  setSelectedSeasonFilters(\[\]);/g' src/components/GardeningGuide.tsx
