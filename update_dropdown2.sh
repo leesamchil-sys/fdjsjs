@@ -1,1 +1,0 @@
-sed -i 's/    setShowPrices\n}: Props) {/    setShowPrices,\n    isSeasonFilterEnabled,\n    setIsSeasonFilterEnabled,\n    selectedSeasonFilters,\n    setSelectedSeasonFilters\n}: Props) {/g' src/components/EncyclopediaFilterDropdown.tsx
